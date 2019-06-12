@@ -47,7 +47,7 @@ def commit_sql():
     connection.commit()
     connection.close()
     print("----SUCCESS----")
-#calls each function to do every 4 hours. I.e. pull top 20 of reddit, every 4 hours.
+#calls each function to do every 4 hours. I.e. pull top 20 of the frontpage of reddit, every 4 hours.
 schedule.every(4).hour.do(reddit_pull)
 schedule.every(4).hour.do(sql_inject)
 schedule.every(4).hour.do(commit_sql)
