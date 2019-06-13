@@ -36,8 +36,10 @@ connection = psycopg2.connect(user = "xxxxxxxxxxx",
                               host = "xxxxxxxxxxxxx",
                               port = "xxxxxxxxx",
                               database = "postgres")
-cursor = connection.cursor()
-print('Connected!')
+
+def sql_connect():
+   cursor = connection.cursor()
+   print('Connected!')
 
 def sql_inject():
     for obj in subreddit_info:
@@ -50,9 +52,10 @@ def commit_sql():
     connection.close()
     print("----SUCCESS----")
 #calls each function to do every 4 hours. I.e. pull top 20 of the frontpage of reddit, every 4 hours.
-schedule.every(4).hour.do(reddit_pull)
-schedule.every(4).hour.do(sql_inject)
-schedule.every(4).hour.do(commit_sql)
+schedule.every(4).hours.do(reddit_pull)
+schedule.every(2).hours.do(sql_connect)
+schedule.every(4).hours.do(sql_inject)
+schedule.every(4).hours.do(commit_sql)
 
 while 1:
     schedule.run_pending()
