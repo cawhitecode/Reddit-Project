@@ -17,14 +17,16 @@ class MyClass(object):
         self.subscribers = subscribers
 
 subreddit_info = []
-#using reddit API to make an object or submission and indexing them
-for submission in reddit.subreddit('all').hot(limit=5):
-    title = str(submission.title)
-    subreddit = str(submission.subreddit)
-    score = int(submission.score)
-    numb_comments = int(submission.num_comments)
-    subscribers = int(submission.subreddit.subscribers)
-    subreddit_info.append(MyClass(title, subreddit, score, numb_comments, subscribers))
+#using reddit API to make an object or submission and indexing them, replacing ' for SQL inject
+    for submission in reddit.subreddit('all').hot(limit=20):
+        bad_title = str(submission.title)
+        title = bad_title.replace("'", "%")
+        title = (title[:200] + '..') if len(title) > 75 else title
+        subreddit = str(submission.subreddit)
+        score = int(submission.score)
+        numb_comments = int(submission.num_comments)
+        subscribers = int(submission.subreddit.subscribers)
+        subreddit_info.append(MyClass(title, subreddit, score, numb_comments, subscribers))
 
 #test to make sure objects are working
 for obj in subreddit_info:
