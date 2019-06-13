@@ -18,11 +18,13 @@ class MyClass(object):
         self.subscribers = subscribers
 
 subreddit_info = []
-#using reddit API to make an object or submission and indexing them
+#using reddit API to make an object or submission and indexing them. Replacing ' for SQL inject
 def reddit_pull():
     print('Reddit')
     for submission in reddit.subreddit('all').hot(limit=20):
-        title = str(submission.title)
+        bad_title = str(submission.title)
+        title = bad_title.replace("'", "%")
+        title = (title[:200] + '..') if len(title) > 75 else title
         subreddit = str(submission.subreddit)
         score = int(submission.score)
         numb_comments = int(submission.num_comments)
