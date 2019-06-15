@@ -3,9 +3,7 @@ from apscheduler.schedulers.blocking import BlockingScheduler
 import psycopg2
 #importing reddit api praw, psycopg2, and scheduler to repeat every 12 hours.
 
-reddit = praw.Reddit(client_id='xxxxxxxxxxxxxxx',
-                     client_secret='xxxxxxxxxxxxxxx',
-                     user_agent='my user agent')
+reddit = praw.Reddit(client_id='xxxxxxxxxxxxxxx', client_secret='xxxxxxxxxxxxxxx', user_agent='my user agent')
 
 #object for submissions to index after this
 class MyClass(object):
@@ -38,7 +36,6 @@ for obj in subreddit_info:
     print("-----------")
 
 #database connection
-
 connection = psycopg2.connect(user = "xxxxxxx", password = "xxxxxxxx", host = "xxxxxxxxxxxx", port = "xxxxxxxxx",
                                   database = "postgres")
 
