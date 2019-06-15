@@ -39,10 +39,7 @@ for obj in subreddit_info:
 
 #database connection
 
-connection = psycopg2.connect(user = "xxxxxxx",
-                                  password = "xxxxxxxx",
-                                  host = "xxxxxxxxxxxx",
-                                  port = "xxxxxxxxx",
+connection = psycopg2.connect(user = "xxxxxxx", password = "xxxxxxxx", host = "xxxxxxxxxxxx", port = "xxxxxxxxx",
                                   database = "postgres")
 
 cursor = connection.cursor()
