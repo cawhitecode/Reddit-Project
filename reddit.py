@@ -47,10 +47,10 @@ connection = psycopg2.connect(user = "xxxxxxx",
 
 cursor = connection.cursor()
 
-#uncomment to delete reddit table
-cursor.execute("""DROP TABLE reddit_info;""")
+#comment out to avoid dropping table
+#cursor.execute("""DROP TABLE reddit_info;""")
 
-#this creates the table, comment out after
+#this creates the table
 sql_command = """
 CREATE TABLE reddit_info (
 title VARCHAR(225),
