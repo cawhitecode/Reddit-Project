@@ -48,7 +48,7 @@ def sql_inject():
     print("----SUCCESS----")
 
 
-#uncomment to use #used to run program while giving a few clarifications to make sure program is working as intended for test
+#used to run program while giving a few clarifications to make sure program is working as intended for test
 def reddit_all():
     reddit_pull()
     sql_inject()
