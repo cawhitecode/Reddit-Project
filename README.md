@@ -1,12 +1,12 @@
 Chris White</br>
 Reddit-Project</br>
-This project is to practice Python, PostgreSQL, and Data Analytics.
 </br>
+This project is to practice Python, PostgreSQL, and Data Analytics.
+</br></br>
 Use Reddit API to gather information then use it gage engagement</br>
 You'll need:</br>
 PuTTy - https://www.chiark.greenend.org.uk/~sgtatham/putty/latest.html</br>
 PGadmin4 </br>
-
 Reddit API account/PRAW</br>
 psycopg2</br>
 BlockingScheduler(if you want data to pull at set times)</br>
