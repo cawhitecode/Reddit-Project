@@ -49,9 +49,9 @@ sql_command = """
 CREATE TABLE reddit_info (
 title VARCHAR(225),
 subreddit VARCHAR(225),
-upvotes INTEGER PRIMARY KEY,
+upvotes INTEGER,
 comments INTEGER,
-subscribers INTEGER);"""
+subscribers INTEGER PRIMARY KEY);"""
 
 cursor.execute(sql_command)
 
