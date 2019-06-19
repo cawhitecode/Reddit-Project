@@ -28,10 +28,7 @@ sudo apt-get install postgresql postgresql-contrib  **note this changes if you w
 sudo -i -u postgres</br>
 CREATE USER **yourname** WITH PASSWORD **'yourpassword'**</br>
 sudo -i -u root</br>
-</br>
 5. Open PGadmin4 using **yourname** as User name and **yourpassword** as password</br>
 keep in mind that your server may not be listening to your program.</br>
-</br>
 6. Don't forget to install PRAW, Psycopg2, and BlockingScheduler</br>
-</br>
 7. Open and save both files. Reddit.py is the initial setup for making the table and pulling the data. Reddit_pull.py pulls the data continously</br>
