@@ -9,7 +9,7 @@ reddit = praw.Reddit(client_id='xxxxxxxxx',
                      user_agent='xxxxxxxxxxxxx')
 
 #object to index the subreddit info and to recall later for SQL translation
-class MyClass(object):
+class Subreddit(object):
     def __init__(self, title, subreddit, score, numb_comments, subscribers):
         self.title = title
         self.subreddit = subreddit
@@ -30,7 +30,7 @@ def reddit_pull():
         score = int(submission.score)
         numb_comments = int(submission.num_comments)
         subscribers = int(submission.subreddit.subscribers)
-        subreddit_info.append(MyClass(title, subreddit, score, numb_comments, subscribers))
+        subreddit_info.append(Subreddit(title, subreddit, score, numb_comments, subscribers))
 
 #this connects to the server and put the reddit info into a readable formart for sql
 def sql_inject():
