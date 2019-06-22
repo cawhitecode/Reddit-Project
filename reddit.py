@@ -4,7 +4,7 @@ import psycopg2
 reddit = praw.Reddit(client_id='xxxxxxxxxxxxxxx', client_secret='xxxxxxxxxxxxxxx', user_agent='my user agent')
 
 #object for submissions to index after this
-class MyClass(object):
+class Subreddit(object):
     def __init__(self, title, subreddit, score, numb_comments, subscribers):
         self.title = title
         self.subreddit = subreddit
@@ -22,7 +22,7 @@ subreddit_info = []
         score = int(submission.score)
         numb_comments = int(submission.num_comments)
         subscribers = int(submission.subreddit.subscribers)
-        subreddit_info.append(MyClass(title, subreddit, score, numb_comments, subscribers))
+        subreddit_info.append(Subreddit(title, subreddit, score, numb_comments, subscribers))
 
 #test to make sure objects are working
 for obj in subreddit_info:
