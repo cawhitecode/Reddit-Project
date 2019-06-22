@@ -1,20 +1,28 @@
 import praw
 import psycopg2
+import datetime
 
+#reddit api praw info
 reddit = praw.Reddit(client_id='xxxxxxxxxxxxxxx', client_secret='xxxxxxxxxxxxxxx', user_agent='my user agent')
 
 #object for submissions to index after this
 class Subreddit(object):
-    def __init__(self, title, subreddit, score, numb_comments, subscribers):
+    def __init__(self, title, subreddit, score, numb_comments, subscribers, time_rank):
         self.title = title
         self.subreddit = subreddit
         self.score = score
         self.numb_comments = numb_comments
         self.subscribers = subscribers
+        self.time_rank = time_rank
 
 subreddit_info = []
+
 #using reddit API to make an object or submission and indexing them, replacing ' for SQL inject
-    for submission in reddit.subreddit('all').hot(limit=20):
+def reddit_pull():
+    print('Reddit')
+    rank = 0
+    for submission in reddit.subreddit('all').hot(limit=25):
+        rank +=1
         bad_title = str(submission.title)
         title = bad_title.replace("'", "%")
         title = (title[:200] + '..') if len(title) > 75 else title
@@ -22,44 +30,57 @@ subreddit_info = []
         score = int(submission.score)
         numb_comments = int(submission.num_comments)
         subscribers = int(submission.subreddit.subscribers)
-        subreddit_info.append(Subreddit(title, subreddit, score, numb_comments, subscribers))
+        time = datetime.today()
+        subreddit_info.append(Subreddit(title, subreddit, score, numb_comments, subscribers, rank, time))
+
 
 #test to make sure objects are working
-for obj in subreddit_info:
-    print("Title:", obj.title)
-    print("/r", obj.subreddit)
-    print("Score:", obj.score)
-    print("Comments:", obj.numb_comments)
-    print("Subscribers:",obj.subscribers)
-    print("-----------")
+def test_data():
+    for obj in subreddit_info:
+        print("Title:", obj.title)
+        print("/r", obj.subreddit)
+        print("Score:", obj.score)
+        print("Comments:", obj.numb_comments)
+        print("Subscribers:",obj.subscribers)
+        print("-----------")
 
-#database connection
-connection = psycopg2.connect(user = "xxxxxxx", password = "xxxxxxxx", host = "xxxxxxxxxxxx", port = "xxxxxxxxx",
-                                  database = "postgres")
+#database connection, making of the table, and formatting data into SQL then injecting data
+def sql_inject():
+    connection = psycopg2.connect(user = "xxxxxxxxxxxxxxxxx", password = "xxxxxxxxx", host = "xxxxxxxxxxx", port = "xxxxxxx", database = "postgres")
+    cursor = connection.cursor()
+    print('Connected!')
 
-cursor = connection.cursor()
+    #this creates the table
+    sql_command = """
+    CREATE TABLE reddit_info_time_rank (
+    title VARCHAR(225),
+    subreddit VARCHAR(225),
+    upvotes INTEGER,
+    comments INTEGER,
+    subscribers INTEGER,
+    time VARCHAR(225) PRIMARY KEY,
+    rank INTERGER);"""
 
-#comment out to avoid dropping table
-#cursor.execute("""DROP TABLE reddit_info;""")
+    cursor.execute(sql_command)
 
-#this creates the table
-sql_command = """
-CREATE TABLE reddit_info (
-title VARCHAR(225),
-subreddit VARCHAR(225),
-upvotes INTEGER,
-comments INTEGER,
-subscribers INTEGER PRIMARY KEY);"""
+    #this makes the object into a sql command to execute to database for each object
+    for obj in subreddit_info:
+        format_sql  = """INSERT INTO reddit_info_time_rank (title, subreddit, upvotes, comments, subscribers, time, rank)
+        VALUES ('{0}', '{1}', '{2}', '{3}', '{4}', '{5}', '{6}');"""
+        cursor.execute(format_sql.format(obj.title, obj.subreddit, obj.score, obj.numb_comments, obj.subscribers, obj.time, obj.rank))
 
-cursor.execute(sql_command)
-
-#this makes the object into a sql command to execute to database for each object
-for obj in subreddit_info:
-    format_sql  = """INSERT INTO reddit_info (title, subreddit, upvotes, comments, subscribers)
-    VALUES ('{0}', '{1}', '{2}', '{3}', '{4}');"""
-    cursor.execute(format_sql.format(obj.title, obj.subreddit, obj.score, obj.numb_comments, obj.subscribers))
-
-
-connection.commit()
-connection.close()
-print("----SUCCESS----")
+        connection.commit()
+        connection.close()
+        print("----SUCCESS----")
+        
+#makes a function to call other functions.
+def reddit_setup_all():
+    reddit_pull()
+    test_data()
+    sql_inject()
+    print('injection done')
+    subreddit_info.clear()
+    print('cleared subreddit_info')
+    
+#calls reddit setup to run
+reddit_setup_all()
