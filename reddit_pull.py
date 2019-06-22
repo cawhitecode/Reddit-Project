@@ -4,7 +4,7 @@ import schedule
 import time
 from datetime import datetime
 
-
+#reddit praw key
 reddit = praw.Reddit(client_id='xxxxxxxxxxxxx', client_secret='xxxxxxxxxxxxxxx', user_agent='my user agent')
 
 #object to index the subreddit info and to recall later for SQL translation
@@ -39,6 +39,7 @@ def reddit_pull():
 
 #this connects to the server and put the reddit info into a readable formart for sql
 def sql_inject():
+    #SQL server connection key
     connection = psycopg2.connect(user = "xxxxxxxxxxxxxxxxx", password = "xxxxxxxxx", host = "xxxxxxxxxxx", port = "xxxxxxx", database = "postgres")
     cursor = connection.cursor()
     print('Connected!')
